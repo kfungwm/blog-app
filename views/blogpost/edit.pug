@@ -1,0 +1,14 @@
+extends ../application.pug
+
+bloock content
+  .container
+    h1 Edit
+    hr
+    form(action="/blogpost" + blogpost.id method="POST")
+      input(type="hidden" name="_method" value="PUT")
+      div(class="form-group")
+        label(for="blogpost-title") Title
+        input(name="title" type="text" class="form-control" id="blogpost-title" value=blogpost.title)
+      div(class="form-group")
+        label(for="blogpost-body") Title
+        input(name="title" type="text" class="form-control" id="blogpost-body" value=blogpost.body)    

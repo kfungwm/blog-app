@@ -1,0 +1,9 @@
+extends ../application.pug
+
+block content
+  h1 Blog app
+  each blogpost in blogposts
+    .container
+      card.card-block
+        row.
+          .col-xs-4.col-md-8

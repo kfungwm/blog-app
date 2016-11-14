@@ -1,0 +1,17 @@
+extends ../application.pug
+
+block content
+  .container
+    .row
+      .col-xs-8.offset-xs-2
+        h1 Leave a blogpost
+        hr
+        form(action="/blogpost" method="POST")
+          div(class="form-group")
+            label(for="blogpost-title") Title
+            input(name="title" type="text" class="form-control" id="blogpost-title")
+          div(class="form-group")
+            label(for="blogpost-body") Body
+            textarea(name="body" class="form-control" rows=5 id="blogpost-body")
+          div(class="form-group text-xs-right")
+            button(type="submit" class="btn btn-lg btn-success") Send blogpost
