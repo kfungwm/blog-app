@@ -22,7 +22,7 @@ app.set('view engine', 'pug');
 
 app.get('/', (request, response) => {
   db.BlogPost.findAll({ order: 'id ASC' }).then((blogPosts) => {
-    response.render('blogpost/index', { blogPosts: blogPosts });
+    response.render('index', { blogPosts: blogPosts });
   });
 });
 
@@ -30,11 +30,11 @@ app.get('/blogpost/new', (request, response) => {
   response.render('blogpost/new');
 });
 
-app.get('/blogpost', (request, response) => {
+app.get('/blogpost/admin', (request, response) => {
   db.BlogPost.findAll().then((blogPosts) => {
-    response.render('admin', { blogPosts: blogPosts });
+    response.render('blogpost/admin', { blogPosts: blogPosts });
   }).catch((error) => {
-    throw error;  
+    throw error;
   });
 });
 
