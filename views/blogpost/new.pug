@@ -4,7 +4,7 @@ block content
   .container
     .row
       .col-xs-8.offset-xs-2
-        h1 Leave a blogpost
+        h1 Leave a Post
         hr
         form(action="/blogpost" method="POST")
           div(class="form-group")
@@ -14,4 +14,4 @@ block content
             label(for="blogpost-body") Body
             textarea(name="body" class="form-control" rows=5 id="blogpost-body")
           div(class="form-group text-xs-right")
-            button(type="submit" class="btn btn-lg btn-success") Send blogpost
+            button(type="submit" class="btn btn-lg btn-success") Send Post

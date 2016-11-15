@@ -1,9 +1,11 @@
 extends ../application.pug
 
 block content
-  h1 Blog app
-  each blogpost in blogposts
+  h1 Blog Application
+  each blogPost in blogPosts
     .container
-      card.card-block
-        row.
+      .card.card-block
+        .row
           .col-xs-4.col-md-8
+            h2= blogPost.title
+            p= blogPost.content
