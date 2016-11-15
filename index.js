@@ -30,11 +30,19 @@ app.get('/blogpost/new', (request, response) => {
   response.render('blogpost/new');
 });
 
-app.get('/:id', (request, response) => {
-  db.Blogpost.findById(request.params.id).then((blogPosts) => {
-    response.render('blogpost/new', { blogPosts: blogPosts});
+app.get('/blogpost', (request, response) => {
+  db.BlogPost.findAll().then((blogPosts) => {
+    response.render('admin', { blogPosts: blogPosts });
+  }).catch((error) => {
+    throw error;  
   });
 });
+
+// app.get('/:id', (request, response) => {
+//   db.Blogpost.findById(request.params.id).then((blogPosts) => {
+//     response.render('blogpost/admin', { blogPosts: blogPosts});
+//   });
+// });
 
 app.get(':id/edit', (request, response) => {
   db.Blogpost.findById(request.params.id).then((blogPosts) => {
