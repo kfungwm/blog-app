@@ -1,0 +1,18 @@
+extends ../application.pug
+
+block content
+  h1 Admin
+  each blogPost in blogPosts
+    .container
+      .card.card-block
+        .row
+          .col-xs-4.col-md-8
+            h2= blogPost.title
+            p= blogPost.content
+            .row
+            .col-xs-3.offset-xs-6
+              a(href='/blogpost/' + blogPost.id + "/edit" class="btn btn-warning btn-block") EDIT POST
+            .col-xs-3
+              form(action="/blogpost/" + blogPost.id method="POST")
+                input(type="hidden" name="_method" value="DELETE")
+                button(type="submit" class="btn btn-danger btn-block") DELETE

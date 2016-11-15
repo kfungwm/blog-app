@@ -10,7 +10,7 @@ var app = express(),
 var db = require('./models');
 
 
-console.log(db);
+// console.log(db);
 
 app.use(express.static('public'));
 
@@ -30,7 +30,17 @@ app.get('/blogpost/new', (request, response) => {
   response.render('blogpost/new');
 });
 
+app.get('/:id', (request, response) => {
+  db.Blogpost.findById(request.params.id).then((blogPosts) => {
+    response.render('blogpost/new', { blogPosts: blogPosts});
+  });
+});
 
+app.get(':id/edit', (request, response) => {
+  db.Blogpost.findById(request.params.id).then((blogPosts) => {
+    response.render('blogpost/edit', { blogPosts: blogPosts });
+  });
+});
 
 app.post('/blogpost', (request, response) => {
   console.log('post request komt binnen');
@@ -41,6 +51,10 @@ app.post('/blogpost', (request, response) => {
   } else {
     response.redirect('/blogpost/new');
   }
+});
+
+app.get('/blogpost/edit', (request, response) => {
+  response.render('blogpost/edit');
 });
 
 
