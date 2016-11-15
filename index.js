@@ -9,6 +9,9 @@ var app = express(),
 
 var db = require('./models');
 
+
+console.log(db);
+
 app.use(express.static('public'));
 
 app.use(morgan('dev'));
@@ -17,15 +20,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.set('view engine', 'pug');
 
-// var Blogger = sequelize.define('blogPost', {
-//   title: Sequelize.STRING,
-//   slug: Sequelize.STRING,
-//   content: Sequelize.TEXT
-// });
-
-
 app.get('/', (request, response) => {
-  db.Blogger.findAll({ order:'id ASC'}).then((blogPost) => {
+  db.BlogPost.findAll({ order: 'id ASC' }).then((blogPosts) => {
     response.render('blogpost/index', { blogPosts: blogPosts });
   });
 });
@@ -39,7 +35,7 @@ app.get('/blogpost/new', (request, response) => {
 app.post('/blogpost', (request, response) => {
   console.log('post request komt binnen');
   if (request.body.title) {
-    db.Blogger.create(request.body).then(() => {
+    db.BlogPost.create(request.body).then(() => {
       response.redirect('/');
     });
   } else {
