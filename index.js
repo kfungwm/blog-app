@@ -1,6 +1,7 @@
 const express = require('express'),
       morgan = require('morgan'),
       bodyParser = require('body-parser'),
+      methodOverride = require('method-override'),
       pug = require('pug'),
       Sequelize = require('sequelize');
 
@@ -18,6 +19,14 @@ app.use(morgan('dev'));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use(methodOverride((req, res) => {
+  if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+    var method = req.body._method;
+    delete req.body._method;
+    return method;
+  }})
+);
+
 app.set('view engine', 'pug');
 
 app.get('/', (request, response) => {
@@ -30,6 +39,8 @@ app.get('/blogpost/new', (request, response) => {
   response.render('blogpost/new');
 });
 
+
+
 app.get('/blogpost/admin', (request, response) => {
   db.BlogPost.findAll().then((blogPosts) => {
     response.render('blogpost/admin', { blogPosts: blogPosts });
@@ -38,14 +49,14 @@ app.get('/blogpost/admin', (request, response) => {
   });
 });
 
-// app.get('/:id', (request, response) => {
-//   db.Blogpost.findById(request.params.id).then((blogPosts) => {
-//     response.render('blogpost/admin', { blogPosts: blogPosts});
-//   });
-// });
+app.get('/blogpost/:id', (request, response) => {
+  db.BlogPost.create(request.body).then(() => {
+    response.redirect('blogpost/show');
+  });
+});
 
-app.get(':id/edit', (request, response) => {
-  db.Blogpost.findById(request.params.id).then((blogPosts) => {
+app.get('/blogpost/:id/edit', (request, response) => {
+  db.BlogPost.findById(request.params.id).then((blogPosts) => {
     response.render('blogpost/edit', { blogPosts: blogPosts });
   });
 });
@@ -61,10 +72,31 @@ app.post('/blogpost', (request, response) => {
   }
 });
 
-app.get('/blogpost/edit', (request, response) => {
-  response.render('blogpost/edit');
+
+app.put('/blogpost/:id', (request, response) => {
+  db.BlogPost.update(request.body, {
+    where: {
+      id: request.params.id
+    }
+  }).then(() => {
+    response.redirect('/blogpost/admin');
+  });
 });
 
+app.get('/blogpost/:id', (request, response) => {
+  response.render('blogpost/admin');
+});
+
+
+app.delete('/blogpost/:id', (request, response) => {
+  db.BlogPost.destroy({
+    where: {
+      id: request.params.id
+    }
+  }).then(() => {
+    response.redirect('/blogpost/admin');
+  });
+});
 
 
 
