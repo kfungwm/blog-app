@@ -49,11 +49,6 @@ app.get('/blogpost/admin', (request, response) => {
   });
 });
 
-app.get('/blogpost/:id', (request, response) => {
-  db.BlogPost.create(request.body).then(() => {
-    response.redirect('blogpost/show');
-  });
-});
 
 app.get('/blogpost/:id/edit', (request, response) => {
   db.BlogPost.findById(request.params.id).then((blogPosts) => {
@@ -81,10 +76,6 @@ app.put('/blogpost/:id', (request, response) => {
   }).then(() => {
     response.redirect('/blogpost/admin');
   });
-});
-
-app.get('/blogpost/:id', (request, response) => {
-  response.render('blogpost/admin');
 });
 
 
