@@ -10,6 +10,7 @@ var app = express(),
 
 var db = require('./models');
 
+var adminRouter = require('./routes/admin');
 
 // console.log(db);
 
@@ -27,6 +28,8 @@ app.use(methodOverride((req, res) => {
   }})
 );
 
+app.use('/admin', adminRouter);
+
 app.set('view engine', 'pug');
 
 app.get('/', (request, response) => {
@@ -39,23 +42,6 @@ app.get('/blogpost/new', (request, response) => {
   response.render('blogpost/new');
 });
 
-
-
-app.get('/blogpost/admin', (request, response) => {
-  db.BlogPost.findAll().then((blogPosts) => {
-    response.render('blogpost/admin', { blogPosts: blogPosts });
-  }).catch((error) => {
-    throw error;
-  });
-});
-
-
-app.get('/blogpost/:id/edit', (request, response) => {
-  db.BlogPost.findById(request.params.id).then((blogPosts) => {
-    response.render('blogpost/edit', { blogPosts: blogPosts });
-  });
-});
-
 app.post('/blogpost', (request, response) => {
   console.log('post request komt binnen');
   if (request.body.title) {
@@ -66,31 +52,6 @@ app.post('/blogpost', (request, response) => {
     response.redirect('/blogpost/new');
   }
 });
-
-
-app.put('/blogpost/:id', (request, response) => {
-  db.BlogPost.update(request.body, {
-    where: {
-      id: request.params.id
-    }
-  }).then(() => {
-    response.redirect('/blogpost/admin');
-  });
-});
-
-
-app.delete('/blogpost/:id', (request, response) => {
-  db.BlogPost.destroy({
-    where: {
-      id: request.params.id
-    }
-  }).then(() => {
-    response.redirect('/blogpost/admin');
-  });
-});
-
-
-
 
 db.sequelize.sync().then(() => {
   app.listen(3000, () => {

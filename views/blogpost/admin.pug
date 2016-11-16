@@ -11,8 +11,8 @@ block content
             p= blogPost.content
             .row
             .col-xs-3.offset-xs-6
-              a(href='/blogpost/' + blogPost.id + "/edit" class="btn btn-warning btn-block") EDIT POST
+              a(href='/admin/blogpost/' + "edit/" + blogPost.id class="btn btn-warning btn-block") EDIT POST
             .col-xs-3
-              form(action="/blogpost/" + blogPost.id method="POST")
+              form(action="/admin/blogpost/" + blogPost.id method="POST")
                 input(type="hidden" name="_method" value="DELETE")
                 button(type="submit" class="btn btn-danger btn-block") DELETE
