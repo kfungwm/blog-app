@@ -7,5 +7,6 @@ block content
       .card.card-block
         .row
           .col-xs-4.col-md-8
-            a(href="/blogpost/" + blogPost.slug)h2= blogPost.title
+            a(href="/blogpost/" + blogPost.slug)
+              h2= blogPost.title
             p= blogPost.content

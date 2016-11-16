@@ -9,10 +9,10 @@ block content
             h2= blogPost.title
             p= blogPost.content
 
-            .row
-            .col-xs-3.offset-xs-6
-              a(href='/blogpost/' + blogPost.id + "/edit" class="btn btn-warning btn-block") EDIT POST
-            .col-xs-3
-              form(action="/blogpost/" + blogPost.id method="POST")
-                input(type="hidden" name="_method" value="DELETE")
-                button(type="submit" class="btn btn-danger btn-block") DELETE
+          h5 Add a comment:
+
+          form(action="/" method="POST")
+            div(class="form-group")
+              textarea(name="content" class="form-control" rows=5")
+            div(class="form-group text-xs-right")
+              button(type="submit" class="btn btn-lg btn-success") Add comment

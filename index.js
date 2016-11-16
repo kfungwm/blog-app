@@ -53,6 +53,30 @@ app.post('/blogpost', (request, response) => {
   }
 });
 
+app.post('/comments', (req, res) => {
+  db.Comment.create(req.body).then((comment) => {
+    return comment.getPost().then((blogPost) => {
+      res.redirect('/' + post.slug);
+    });
+  });
+});
+
+
+app.get('/blogpost/:slug', (req, res) => {
+  db.BlogPost.findOne({
+    where: {
+      slug: req.params.slug
+    }
+  }).then((post) => {
+    return post.getComments().then((comments) => {
+      res.render('blogpost/show', { blogPost: blogPost, comments: comments });
+    });
+  }).catch((error) => {
+    res.status(404).end();
+  });
+});
+
+
 db.sequelize.sync().then(() => {
   app.listen(3000, () => {
     console.log('Web Server is running on port 3000');
