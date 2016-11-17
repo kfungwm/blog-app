@@ -9,10 +9,19 @@ block content
             h2= blogPost.title
             p= blogPost.content
 
+          each comment in comments
+              .container
+                .card.card-block
+                  .row
+                    .col-xs-4.col-md-8
+                      p= comment.content
+
           h5 Add a comment:
 
-          form(action="/" method="POST")
+
+          form(action="/comments/" method="POST")
+            input(name="BlogPostId" type="hidden" value=blogPost.id)
             div(class="form-group")
-              textarea(name="content" class="form-control" rows=5")
+              textarea(name="content" class="form-control" rows=5)
             div(class="form-group text-xs-right")
               button(type="submit" class="btn btn-lg btn-success") Add comment

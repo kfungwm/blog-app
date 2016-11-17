@@ -53,26 +53,31 @@ app.post('/blogpost', (request, response) => {
   }
 });
 
-app.post('/comments', (req, res) => {
-  db.Comment.create(req.body).then((comment) => {
-    return comment.getPost().then((blogPost) => {
-      res.redirect('/' + post.slug);
+app.post('/comments', (request, response) => {
+  db.Comment.create(request.body).then((comment) => {
+    console.log(comment);
+    return comment.getBlogPost().then((blogPost) => {
+      console.log(blogPost);
+      response.redirect('/' + blogPost.slug);
     });
   });
 });
 
 
-app.get('/blogpost/:slug', (req, res) => {
+app.get('/:slug', (request, response) => {
+  console.log("hetwerkt:");
   db.BlogPost.findOne({
     where: {
-      slug: req.params.slug
+      slug: request.params.slug
     }
-  }).then((post) => {
-    return post.getComments().then((comments) => {
-      res.render('blogpost/show', { blogPost: blogPost, comments: comments });
+  }).then((blogPost) => {
+    // response.render('blogpost/show', { blogPost: blogPost, comments: comments });
+    return blogPost.getComments().then((comments) => {
+      console.log(comments);
+      response.render('blogpost/show', { blogPost: blogPost, comments: comments });
     });
   }).catch((error) => {
-    res.status(404).end();
+    response.status(404).end();
   });
 });
 
