@@ -39,8 +39,23 @@ app.get('/', (request, response) => {
   });
 });
 
+
+
+
 app.get('/blogpost/new', (request, response) => {
   response.render('blogpost/new');
+});
+
+app.get('/register', (request, response) => {
+  response.render('users/new');
+});
+
+app.post('/users', (request, response) => {
+  db.User.create(request.body).then((user) => {
+    response.redirect('/');
+  }).catch(() => {
+    response.redirect('/register');
+  });
 });
 
 app.post('/blogpost', (request, response) => {

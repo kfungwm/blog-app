@@ -1,0 +1,17 @@
+extends ../application.pug
+
+block content
+  .container
+    .row
+      .col-xs-8.offset-xs-2
+        h1 Register a User
+        hr
+        form(action="/users" method="POST")
+          div(class="form-group")
+            label(for="users-email") Email
+            input(type="email" name="email" class="form-control" required)
+          div(class="form-group")
+            label(for="users-password") Password
+            input(type="password" name="password" class="form-control" required)
+          div(class="form-group text-xs-right")
+            button(type="submit" class="btn btn-lg btn-success") Register
