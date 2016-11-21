@@ -2,7 +2,18 @@ var express = require('express'),
     db = require('../models'),
     router = express.Router();
 
+var requireUser = (request, response, next) => {
+  if (request.path === '/admin') {
+    return next();
+  }
+  if (request.session.user) {
+    next();
+  } else {
+    response.redirect('/login');
+  }
+};
 
+router.use(requireUser);
 
 router.get('/blogpost', (request, response) => {
   db.BlogPost.findAll().then((blogPosts) => {
@@ -40,6 +51,12 @@ router.delete('/blogpost/:id', (request, response) => {
   }).then(() => {
     response.redirect('/admin/blogpost');
   });
+});
+
+
+router.get('/logout', (request, response) => {
+  request.session.user = undefined;
+  response.redirect('/');
 });
 
 

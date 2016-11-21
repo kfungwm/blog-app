@@ -39,7 +39,8 @@ app.set('view engine', 'pug');
 app.get('/', (request, response) => {
   console.log(response.session);
   db.BlogPost.findAll({ order: 'id ASC' }).then((blogPosts) => {
-    response.render('index', { blogPosts: blogPosts });
+    console.log(request.session.user);
+    response.render('index', { blogPosts: blogPosts, user: request.session.user });
   });
 });
 
@@ -125,6 +126,7 @@ app.get('/:slug', (request, response) => {
     response.status(404).end();
   });
 });
+
 
 
 db.sequelize.sync().then(() => {

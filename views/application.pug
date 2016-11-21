@@ -6,10 +6,15 @@ html
   body
     nav(class="navbar navbar-dark bg-inverse")
       a(class="navbar-brand" href="/") Home
-      a(href="/blogpost/new" class="btn btn-success float-xs-right") Add Post
-      a(href="/admin/blogpost" class="navbar-brand float-xs-right") Admin
-      a(href="/register" class="navbar-brand float-xs-right") Register
-      a(href="/login" class="navbar-brand float-xs-right") Login
+
+      if user
+        a(href="/blogpost/new" class="btn btn-success float-xs-right" id="user") Add Post
+        a(href="/admin/blogpost" class="navbar-brand float-xs-right") Admin
+        a(href="/admin/logout" class="navbar-brand float-xs-right") Logout
+      else
+        a(href="/register" class="navbar-brand float-xs-right") Register
+        a(href="/login" class="navbar-brand float-xs-right") Login
+
 
 
 
