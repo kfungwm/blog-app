@@ -3,6 +3,7 @@ const express = require('express'),
       bodyParser = require('body-parser'),
       methodOverride = require('method-override'),
       pug = require('pug'),
+      session = require('express-session'),
       displayRoutes = require('express-routemap'),
       Sequelize = require('sequelize');
 
@@ -19,6 +20,8 @@ app.use(express.static('public'));
 
 app.use(morgan('dev'));
 
+app.use(session({ secret: 'Our secret key' }));
+
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(methodOverride((req, res) => {
@@ -34,6 +37,7 @@ app.use('/admin', adminRouter);
 app.set('view engine', 'pug');
 
 app.get('/', (request, response) => {
+  console.log(response.session);
   db.BlogPost.findAll({ order: 'id ASC' }).then((blogPosts) => {
     response.render('index', { blogPosts: blogPosts });
   });
@@ -50,11 +54,36 @@ app.get('/register', (request, response) => {
   response.render('users/new');
 });
 
+app.get('/login', (request, response) => {
+  response.render('login');
+});
+
+
 app.post('/users', (request, response) => {
   db.User.create(request.body).then((user) => {
     response.redirect('/');
   }).catch(() => {
     response.redirect('/register');
+  });
+});
+
+app.post('/login', (request, response) => {
+  console.log(request.body.email);
+  var userInDB = db.User.findOne({
+    where: {
+      email: request.body.email
+    }
+  }).then((userInDB) => {
+    console.log('Find the following user:')
+    console.log(userInDB);
+    if (userInDB.password === request.body.password) {
+      request.session.user = userInDB;
+      response.redirect('/');
+    } else {
+      response.redirect('/login');
+    }
+  }).catch(() => {
+    response.redirect('/login');
   });
 });
 
