@@ -17,7 +17,7 @@ router.use(requireUser);
 
 router.get('/blogpost', (request, response) => {
   db.BlogPost.findAll().then((blogPosts) => {
-    response.render('blogpost/admin', { blogPosts: blogPosts });
+    response.render('blogpost/admin', { blogPosts: blogPosts, user: request.session.user });
   }).catch((error) => {
     throw error;
   });
@@ -26,7 +26,7 @@ router.get('/blogpost', (request, response) => {
 
 router.get('/blogpost/edit/:id', (request, response) => {
   db.BlogPost.findById(request.params.id).then((blogPosts) => {
-    response.render('blogpost/edit', { blogPosts: blogPosts });
+    response.render('blogpost/edit', { blogPosts: blogPosts, user: request.session.user });
   });
 });
 

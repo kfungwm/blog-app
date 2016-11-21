@@ -8,9 +8,11 @@ html
       a(class="navbar-brand" href="/") Home
 
       if user
+        a(href="/admin/logout" class="btn navbar-brand float-xs-right") Logout
+        a(href="/admin/blogpost" class="btn navbar-brand float-xs-right") Admin
         a(href="/blogpost/new" class="btn btn-success float-xs-right" id="user") Add Post
-        a(href="/admin/blogpost" class="navbar-brand float-xs-right") Admin
-        a(href="/admin/logout" class="navbar-brand float-xs-right") Logout
+
+
       else
         a(href="/register" class="navbar-brand float-xs-right") Register
         a(href="/login" class="navbar-brand float-xs-right") Login

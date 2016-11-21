@@ -48,7 +48,7 @@ app.get('/', (request, response) => {
 
 
 app.get('/blogpost/new', (request, response) => {
-  response.render('blogpost/new');
+  response.render('blogpost/new', { user: request.session.user });
 });
 
 app.get('/register', (request, response) => {
@@ -120,7 +120,7 @@ app.get('/:slug', (request, response) => {
     // response.render('blogpost/show', { blogPost: blogPost, comments: comments });
     return blogPost.getComments().then((comments) => {
       console.log(comments);
-      response.render('blogpost/show', { blogPost: blogPost, comments: comments });
+      response.render('blogpost/show', { blogPost: blogPost, comments: comments, user: request.session.user });
     });
   }).catch((error) => {
     response.status(404).end();
