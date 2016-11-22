@@ -12,6 +12,12 @@ block content
             input(type="email" name="email" class="form-control" required)
           div(class="form-group")
             label(for="users-password") Password
-            input(type="password" name="password" class="form-control" required)     
-          div(class="form-group text-xs-right")
-            button(type="submit" class="btn btn-lg btn-success") Login
+            input(type="password" name="password" class="form-control" required)
+
+
+          div(class="form-group")
+            .row
+              div(class="col-xs-6")
+                a(href="/forget-password" class="btn btn-link") Forgot Password?
+              div(class="col-xs-6 text-xs-right")
+                button(type="submit" class="btn btn-lg btn-success") Login

@@ -44,7 +44,9 @@ app.get('/', (request, response) => {
   });
 });
 
-
+app.get('/forget-password', (request, response) => {
+  response.render('forget-password');
+});
 
 
 app.get('/blogpost/new', (request, response) => {
@@ -59,6 +61,28 @@ app.get('/login', (request, response) => {
   response.render('login');
 });
 
+app.post('/forget-password', (request, response) => {
+  db.User.findOne({
+    where: {
+      email: request.body.email
+    }
+  }).then((user) => {
+    if (user) {
+      response.redirect('/');
+    } else {
+      response.redirect('/forget-password');
+    }
+    response.redirect('/');
+  });
+});
+
+app.get('/change-password/:uuid', (request, response) => {
+
+});
+
+app.post('/change-password/:uuid', (request, response) => {
+
+});
 
 app.post('/users', (request, response) => {
   db.User.create(request.body).then((user) => {
