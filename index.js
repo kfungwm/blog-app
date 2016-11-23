@@ -5,6 +5,7 @@ const express = require('express'),
       pug = require('pug'),
       session = require('express-session'),
       displayRoutes = require('express-routemap'),
+      bcrypt = require('bcrypt'),
       Sequelize = require('sequelize');
 
 var app = express(),
@@ -85,10 +86,16 @@ app.post('/change-password/:uuid', (request, response) => {
 });
 
 app.post('/users', (request, response) => {
-  db.User.create(request.body).then((user) => {
-    response.redirect('/');
-  }).catch(() => {
-    response.redirect('/register');
+  var user = request.body;
+
+  bcrypt.hash(user.password, 10, (error, hash) => {
+    user.password = hash;
+
+    db.User.create(request.body).then((user) => {
+      response.redirect('/');
+    }).catch(() => {
+      response.redirect('/register');
+    });
   });
 });
 
@@ -99,7 +106,7 @@ app.post('/login', (request, response) => {
       email: request.body.email
     }
   }).then((userInDB) => {
-    console.log('Find the following user:')
+    console.log('Find the following user:');
     console.log(userInDB);
     if (userInDB.password === request.body.password) {
       request.session.user = userInDB;

@@ -4,7 +4,13 @@ module.exports = function(sequelize, DataTypes) {
     name: DataTypes.STRING,
     surname: DataTypes.STRING,
     email: DataTypes.STRING,
-    password: DataTypes.STRING
+    password: {
+      type: DataTypes.VIRTUAL,
+      set: function(val) {
+        this.setDataValue('passwordDigest', bcrypt.hashSync(val, 10));
+      }
+    },
+    passwordDigest: DataTypes.STRING
   }, {
     classMethods: {
       associate: function(models) {
