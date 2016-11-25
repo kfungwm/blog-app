@@ -93,31 +93,54 @@ app.post('/users', (request, response) => {
 
     db.User.create(request.body).then((user) => {
       response.redirect('/');
-    }).catch(() => {
+    }).catch((error) => {
+      console.log(error);
       response.redirect('/register');
     });
   });
 });
 
-app.post('/login', (request, response) => {
-  console.log(request.body.email);
-  var userInDB = db.User.findOne({
+app.post('login', (request, response) => {
+  db.User.findOne({
     where: {
       email: request.body.email
     }
   }).then((userInDB) => {
-    console.log('Find the following user:');
-    console.log(userInDB);
-    if (userInDB.password === request.body.password) {
-      request.session.user = userInDB;
-      response.redirect('/');
-    } else {
-      response.redirect('/login');
-    }
-  }).catch(() => {
-    response.redirect('/login');
+    bcrypt.compare(request.body.password, userInDB.passwordDigest, (error, result) => {
+      if(result) {
+        request.session.user = userInDB;
+        response.redirect('/');
+      } else {
+        response.render('login', { error: { message: 'Password is not correct' } });
+      }
+    });
+  }).catch((error) => {
+    response.render('login', { error: { message: 'User not found in the database' } });
   });
 });
+
+
+
+//
+// app.post('/login', (request, response) => {
+//   console.log(request.body.email);
+//   var userInDB = db.User.findOne({
+//     where: {
+//       email: request.body.email
+//     }
+//   }).then((userInDB) => {
+//     console.log('Find the following user:');
+//     console.log(userInDB);
+//     if (userInDB.password === request.body.password) {
+//       request.session.user = userInDB;
+//       response.redirect('/');
+//     } else {
+//       response.redirect('/login');
+//     }
+//   }).catch(() => {
+//     response.redirect('/login');
+//   });
+// });
 
 app.post('/blogpost', (request, response) => {
   console.log('post request komt binnen');
