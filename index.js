@@ -100,12 +100,14 @@ app.post('/users', (request, response) => {
   });
 });
 
-app.post('login', (request, response) => {
+app.post('/login', (request, response) => {
   db.User.findOne({
     where: {
       email: request.body.email
     }
   }).then((userInDB) => {
+    console.log(request.body.password);
+    console.log(userInDB.passwordDigest);
     bcrypt.compare(request.body.password, userInDB.passwordDigest, (error, result) => {
       if(result) {
         request.session.user = userInDB;
@@ -115,6 +117,7 @@ app.post('login', (request, response) => {
       }
     });
   }).catch((error) => {
+    console.log(error);
     response.render('login', { error: { message: 'User not found in the database' } });
   });
 });
