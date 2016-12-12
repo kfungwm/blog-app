@@ -87,16 +87,12 @@ app.post('/change-password/:uuid', (request, response) => {
 
 app.post('/users', (request, response) => {
   var user = request.body;
-
-  bcrypt.hash(user.password, 10, (error, hash) => {
-    user.password = hash;
-
-    db.User.create(request.body).then((user) => {
-      response.redirect('/');
-    }).catch((error) => {
-      console.log(error);
-      response.redirect('/register');
-    });
+  
+  db.User.create(request.body).then((user) => {
+    response.redirect('/');
+  }).catch((error) => {
+    console.log(error);
+    response.redirect('/register');
   });
 });
 
@@ -107,9 +103,12 @@ app.post('/login', (request, response) => {
     }
   }).then((userInDB) => {
     console.log(request.body.password);
+    console.log(userInDB.dataValues);
     console.log(userInDB.passwordDigest);
     bcrypt.compare(request.body.password, userInDB.passwordDigest, (error, result) => {
-      if(result) {
+      console.log('result is');
+      console.log(result);
+      if (result) {
         request.session.user = userInDB;
         response.redirect('/');
       } else {
